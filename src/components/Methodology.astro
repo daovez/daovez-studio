@@ -1,9 +1,19 @@
 ---
+import MethodCard from './MethodCard.astro';
+
+const principles = [
+	{ number: '01', category: 'Enfoque', title: 'Entender antes de construir.', description: 'Partimos de tus objetivos y de cómo trabaja tu equipo. Identificamos lo que aporta valor antes de elegir la tecnología.', tags: ['Contexto', 'Prioridades'] },
+	{ number: '02', category: 'Arquitectura', title: 'Cada pieza, conectada.', description: 'Diseñamos sistemas claros que conectan tus herramientas, ordenan la información y crecen con tu negocio.', tags: ['Astro', 'n8n', 'Odoo'] },
+	{ number: '03', category: 'Evolución', title: 'Mejorar con criterio.', description: 'Medimos lo que ocurre, recogemos el aprendizaje y ajustamos el sistema para que siga siendo útil a tu equipo.', tags: ['Medición', 'Mejora continua'] },
+];
 ---
 
 <section id="metodologia" class="section container methodology">
 	<div class="methodology-box">
 		<div><p class="eyebrow">Nuestra metodología</p><h2>Claridad antes que<br /><span>velocidad.</span></h2></div>
 		<div class="methodology-copy"><p>Las mejores automatizaciones no empiezan con una herramienta. Empiezan con una pregunta bien hecha.</p><a class="text-link" href="/contacto">Empezar una conversación <span aria-hidden="true">→</span></a></div>
+	</div>
+	<div class="methodology-steps">
+		{principles.map(principle => <MethodCard {...principle} href="/contacto" />)}
 	</div>
 </section>

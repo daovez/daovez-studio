@@ -1,15 +1,169 @@
 ---
 import Brand from './Brand.astro';
+import '../styles/navbar.css';
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
-<header class="site-header">
-	<nav class="container nav" aria-label="Navegación principal">
-		<Brand />
-		<div class="nav-links">
-			<a href="/#soluciones">Soluciones</a>
-			<a href="/demos">Demos</a>
-			<a href="/#metodologia">Método</a>
-		</div>
-		<a class="button button-small" href="/contacto">Hablemos <span aria-hidden="true">↗</span></a>
-	</nav>
+<header class="site-header nav-header">
+  <studio-navigation>
+    <nav class="container nav" aria-label="Navegación principal" data-pathname={pathname}>
+      <Brand />
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-links" aria-label="Abrir menú de navegación">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path class="nav-hamburger" d="M4 7h16M4 12h16M4 17h16" /><path class="nav-close" d="m6 6 12 12M18 6 6 18" /></svg>
+      </button>
+      <div class="nav-links" id="primary-links">
+        <a class="nav-link" href="/#soluciones" data-section="soluciones">Soluciones</a>
+        <a class="nav-link" href="/demos" aria-current={pathname === '/demos' ? 'page' : undefined}>Demos</a>
+        <a class="nav-link" href="/#metodologia" data-section="metodologia">Método</a>
+      </div>
+      <a class="button button-small nav-contact" href="/contacto" aria-current={pathname === '/contacto' ? 'page' : undefined}>Hablemos <span aria-hidden="true">↗</span></a>
+    </nav>
+  </studio-navigation>
 </header>
+
+<script>
+  class StudioNavigation extends HTMLElement {
+    private cleanup?: () => void;
+
+    connectedCallback() {
+      this.cleanup?.();
+      const controller = new AbortController();
+      const options = { signal: controller.signal };
+      const nav = this.querySelector<HTMLElement>('nav')!;
+      const toggle = this.querySelector<HTMLButtonElement>('.nav-toggle')!;
+      const links = this.querySelector<HTMLElement>('.nav-links')!;
+      const mobile = window.matchMedia('(max-width: 767px)');
+      const header = this.closest<HTMLElement>('.site-header')!;
+      const root = document.documentElement;
+      const footer = document.querySelector<HTMLElement>('.footer');
+      const sections = ['soluciones', 'metodologia'].flatMap(id => {
+        const section = document.getElementById(id);
+        return section ? [section] : [];
+      });
+      let frame = 0;
+      let historyFrame = 0;
+      let clearance = 0;
+      const entryHash = location.hash;
+      let initialScrollCanceled = false;
+      const anchorGap = () => parseFloat(getComputedStyle(root).getPropertyValue('--anchor-gap')) || 0;
+      const measure = () => {
+        // Sticky top + actual pill height, independent of the viewport or zoom.
+        clearance = nav.getBoundingClientRect().height + (parseFloat(getComputedStyle(header).top) || 0);
+        root.style.setProperty('--nav-clearance', `${clearance}px`);
+        if (footer) root.style.setProperty('--footer-height', `${footer.getBoundingClientRect().height}px`);
+        sections.forEach(section => {
+          const heading = section.querySelector<HTMLElement>('.eyebrow');
+          if (heading) {
+            const inset = heading.getBoundingClientRect().top - section.getBoundingClientRect().top;
+            section.style.setProperty('--anchor-inset', `${inset}px`);
+          }
+        });
+      };
+      const currentTarget = () => sections.find(section => `#${section.id}` === location.hash);
+      const alignHash = () => {
+        close();
+        measure();
+        currentTarget()?.scrollIntoView({ behavior: 'instant', block: 'start' });
+        syncActive();
+      };
+      const setMobile = (open: boolean) => {
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
+        this.classList.toggle('mobile-open', open);
+      };
+      const close = () => setMobile(false);
+      const syncActive = () => {
+        if (nav.dataset.pathname !== '/') return;
+        const active = ['soluciones', 'metodologia'].find(id => {
+          const rect = document.getElementById(id)?.getBoundingClientRect();
+          return rect && rect.top <= clearance + anchorGap() + 1 && rect.bottom > clearance;
+        });
+        this.querySelectorAll<HTMLAnchorElement>('[data-section]').forEach(link => {
+          if (link.dataset.section === active) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      };
+      toggle.addEventListener('click', () => setMobile(toggle.getAttribute('aria-expanded') !== 'true'), options);
+      this.addEventListener('focusout', event => {
+        if (!this.contains(event.relatedTarget as Node | null)) close();
+      }, options);
+      document.addEventListener('pointerdown', event => {
+        if (!this.contains(event.target as Node)) close();
+      }, options);
+      this.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+          close();
+          toggle.focus();
+          event.preventDefault();
+        }
+      }, options);
+      links.addEventListener('click', event => {
+        const link = (event.target as Element).closest<HTMLAnchorElement>('a');
+        if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        const target = new URL(link.href);
+        const samePage = target.pathname === location.pathname && target.hash;
+        initialScrollCanceled = true;
+        close();
+        if (samePage) {
+          const section = document.getElementById(target.hash.slice(1));
+          if (section) {
+            event.preventDefault();
+            measure();
+            if (location.hash !== target.hash) history.pushState(null, '', target.hash);
+            section.tabIndex = -1;
+            section.focus({ preventScroll: true });
+            section.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
+          }
+        }
+      }, options);
+      const breakpoint = () => {
+        const hiddenFocus = mobile.matches && links.contains(document.activeElement);
+        close();
+        if (hiddenFocus) toggle.focus();
+      };
+      mobile.addEventListener('change', breakpoint, options);
+      window.addEventListener('scroll', () => {
+        if (!frame) frame = requestAnimationFrame(() => { frame = 0; syncActive(); });
+      }, { ...options, passive: true });
+      const restoreHash = () => {
+        cancelAnimationFrame(historyFrame);
+        // Allow native history restoration to finish before aligning the hash.
+        historyFrame = requestAnimationFrame(() => {
+          historyFrame = requestAnimationFrame(alignHash);
+        });
+      };
+      window.addEventListener('hashchange', restoreHash, options);
+      window.addEventListener('popstate', restoreHash, options);
+      window.addEventListener('resize', () => { measure(); syncActive(); }, options);
+      const observer = new ResizeObserver(() => { measure(); syncActive(); });
+      observer.observe(nav);
+      if (footer) observer.observe(footer);
+      sections.forEach(section => {
+        const heading = section.querySelector<HTMLElement>('.services-heading, .methodology-box');
+        if (heading) observer.observe(heading);
+      });
+      measure();
+      syncActive();
+      const loaded = new Promise<void>(resolve => {
+        if (document.readyState === 'complete') resolve();
+        else window.addEventListener('load', () => resolve(), { ...options, once: true });
+      });
+      const cancelInitialScroll = () => { initialScrollCanceled = true; };
+      window.addEventListener('wheel', cancelInitialScroll, { ...options, once: true, passive: true });
+      window.addEventListener('touchmove', cancelInitialScroll, { ...options, once: true, passive: true });
+      Promise.all([loaded, document.fonts.ready]).then(() => {
+        if (controller.signal.aborted) return;
+        measure(); syncActive();
+        if (entryHash && location.hash === entryHash && !initialScrollCanceled) restoreHash();
+      });
+      this.cleanup = () => {
+        controller.abort(); observer.disconnect();
+        cancelAnimationFrame(frame); cancelAnimationFrame(historyFrame);
+      };
+    }
+
+    disconnectedCallback() { this.cleanup?.(); }
+  }
+  if (!customElements.get('studio-navigation')) customElements.define('studio-navigation', StudioNavigation);
+</script>

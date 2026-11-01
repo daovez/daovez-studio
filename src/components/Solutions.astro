@@ -1,23 +1,100 @@
 ---
+import { Image } from 'astro:assets';
+import web from '../assets/services/web.png';
+import odoo from '../assets/services/odoo.png';
+import automation from '../assets/services/automation.png';
+import ai from '../assets/services/ai.png';
+
 const solutions = [
-	{ number: '01', title: 'Automatización', text: 'Conecta tus herramientas y elimina el trabajo repetitivo que frena a tu equipo.', tag: 'Operaciones' },
-	{ number: '02', title: 'Sistemas internos', text: 'Diseñamos la capa digital que ordena la información y hace visibles tus procesos.', tag: 'Estructura' },
-	{ number: '03', title: 'Experiencias', text: 'Interfaces claras para productos, servicios y demostraciones que dejan huella.', tag: 'Producto' }
+	{
+		number: '01', tag: 'Producto', service: 'desarrollo-web', image: web,
+		title: 'Desarrollo Web & UI/UX',
+		text: 'Interfaces ultrarrápidas y experiencias digitales a medida, diseñadas para facilitar cada interacción con tu negocio.',
+		technology: '(Astro, React, UI/UX).',
+	},
+	{
+		number: '02', tag: 'Estructura', service: 'sistemas-empresariales', image: odoo,
+		title: 'Odoo ERP & Sistemas',
+		text: 'Unificamos la gestión empresarial y conectamos las áreas de tu negocio para centralizar la información y controlar tus datos.',
+		technology: '(Odoo ERP, Gestión empresarial, Datos).',
+	},
+	{
+		number: '03', tag: 'Operaciones', service: 'automatizacion', image: automation,
+		title: 'Automatización de Procesos',
+		text: 'Conectamos herramientas, datos y tareas para eliminar trabajo manual y crear flujos operativos sin fricción.',
+		technology: '(n8n, Supabase, Flujos de trabajo).',
+	},
+	{
+		number: '04', tag: 'Inteligencia', service: 'agentes-ia', image: ai,
+		title: 'IA & Agentes 24/7',
+		text: 'Agentes conversacionales que atienden consultas y cualifican leads las 24 horas, integrados en tus servicios y procesos.',
+		technology: '(OpenAI, Modelos de lenguaje, Leads).',
+	},
 ];
 ---
 
-<section id="soluciones" class="section container">
-	<div class="section-heading">
-		<div><p class="eyebrow">Qué hacemos</p><h2>La complejidad,<br /><span>bien resuelta.</span></h2></div>
-		<p class="section-lead">No añadimos capas. Encontramos el camino más directo entre tus objetivos y la tecnología.</p>
+<section id="soluciones" class="services-section" aria-labelledby="services-title">
+	<div class="services-heading">
+		<div><p class="eyebrow">QUÉ HACEMOS</p><h2 id="services-title">La complejidad, bien resuelta.</h2></div>
+		<p class="services-lead">No añadimos capas. Encontramos el camino más directo entre tus objetivos y la tecnología.</p>
 	</div>
-	<div class="solution-grid">
+	<div class="services-grid">
 		{solutions.map((solution) => (
-			<article class="card solution-card">
-				<div class="card-top"><span class="mono">{solution.number}</span><span class="tag">{solution.tag}</span></div>
-				<div><h3>{solution.title}</h3><p>{solution.text}</p></div>
-				<span class="card-arrow" aria-hidden="true">↗</span>
+			<article class="service-card border border-white/10">
+				<div class="service-meta">
+					{solution.service === 'sistemas-empresariales' && <img class="service-brand" src="/brands/odoo.svg" alt="Odoo" width="60" height="20" loading="lazy" decoding="async" />}
+					{solution.service === 'automatizacion' && <img class="service-brand" src="/brands/n8n.svg" alt="n8n" width="60" height="20" loading="lazy" decoding="async" />}
+					<span class="service-number">{solution.number}</span><span>{solution.tag}</span>
+				</div>
+				<div class="service-art">
+					<Image src={solution.image} alt="" widths={[360, 720, 1080]} sizes="(min-width: 1280px) 240px, (min-width: 1200px) 20vw, (min-width: 768px) 42vw, calc(100vw - 80px)" format="webp" quality={85} loading="lazy" decoding="async" />
+				</div>
+				<div class="service-copy">
+					<h3>{solution.title}</h3>
+					<p>{solution.text}</p>
+					<p class="service-technology">{solution.technology}</p>
+					<a class="service-explore" href={`/contacto?servicio=${solution.service}`}>Explorar solución<span aria-hidden="true">↗</span><span class="sr-only">: {solution.title}</span></a>
+				</div>
 			</article>
 		))}
 	</div>
 </section>
+
+<style>
+  .services-section { width: 100%; max-width: var(--content-width); margin-inline: auto; padding: 48px var(--page-gutter) var(--section-space); --anchor-inset: 48px; scroll-margin-top: max(0px, calc(var(--nav-clearance) + var(--anchor-gap) - var(--anchor-inset))); }
+  .services-heading { max-width: 900px; margin: 0 auto 32px; text-align: center; }
+  .services-heading .eyebrow { color: #1D3DF2; font: 12px/1.5 "DM Mono", monospace; letter-spacing: .14em; }
+  .services-heading h2 { max-width: 900px; margin: 14px auto 0; font-size: clamp(36px, 3.2vw, 48px); line-height: 1.08; letter-spacing: -.055em; font-weight: 500; text-wrap: balance; }
+  .services-lead { max-width: 620px; margin: 18px auto 0; color: rgba(255,255,255,.65); font-size: 15px; line-height: 1.6; text-wrap: balance; }
+  .services-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .service-card { position: relative; display: grid; grid-template-rows: subgrid; grid-row: span 6; row-gap: 16px; min-width: 0; padding: clamp(20px, 1.8vw, 24px); border-radius: 16px; background: rgba(5,5,5,.92); transition: border-color 180ms ease; }
+  .service-card:hover, .service-card:focus-within { border-color: rgba(29,61,242,.65); }
+  .service-meta { display: flex; align-items: center; justify-content: flex-end; gap: 10px; color: rgba(255,255,255,.7); font: 10px/1.5 "DM Mono", monospace; }
+  .service-brand { display: block; flex: 0 0 60px; width: 60px; height: 20px; margin-right: auto; object-fit: contain; object-position: left center; }
+  .service-number { color: rgba(255,255,255,.5); padding-right: 10px; border-right: 1px solid rgba(255,255,255,.18); }
+  .service-art { display: grid; place-items: center; min-width: 0; width: 100%; aspect-ratio: 3 / 2; max-height: 180px; align-self: center; }
+  .service-art :global(img) { display: block; width: 100%; height: auto; max-height: 180px; aspect-ratio: 3 / 2; object-fit: contain; }
+  .service-copy { display: contents; }
+  .service-copy h3 { margin: 0; color: #fff; font-size: clamp(23px, 2vw, 27px); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; text-wrap: balance; }
+  .service-copy p { margin: 0; color: rgba(255,255,255,.67); font-size: 13px; line-height: 1.65; }
+  .service-copy .service-technology { color: rgba(255,255,255,.55); font-size: 11px; line-height: 1.5; }
+  .service-explore { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.1); color: #fff; font-size: 12px; transition: color 180ms ease; }
+  .service-explore::after { content: ''; position: absolute; inset: 0; border-radius: 16px; }
+  .service-explore:hover { color: #1D3DF2; }
+  .service-explore:focus-visible { outline: none; }
+  .service-explore:focus-visible::after { outline: 2px solid #1D3DF2; outline-offset: 3px; }
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 767px) {
+    .services-section { padding-top: 32px; --anchor-inset: 32px; }
+    .services-heading { margin-bottom: 36px; }
+    .services-heading h2 { font-size: clamp(36px, 10.8vw, 42px); }
+    .services-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .service-card { padding: 20px; }
+    .service-copy h3 { font-size: 25px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .service-card, .service-explore { transition: none; }
+  }
+</style>

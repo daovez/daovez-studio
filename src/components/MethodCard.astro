@@ -1,0 +1,38 @@
+---
+interface Props {
+  number: string;
+  category: string;
+  title: string;
+  description: string;
+  tags?: string[];
+  href?: string;
+}
+
+const { number, category, title, description, tags = [], href } = Astro.props;
+---
+
+<article class="method-card group relative flex h-full min-w-0 flex-col rounded-xl border border-white/10 bg-[#0a0a0c]/80 p-6 backdrop-blur-md transition-[transform,border-color] duration-200 hover:-translate-y-1 hover:border-cyan-500/40 focus-within:border-cyan-500/40 motion-reduce:transform-none motion-reduce:transition-none">
+  <div class="mb-6 flex items-center justify-between gap-4 font-mono text-xs text-white/45">
+    <span>{number}</span>
+    <span class="text-right text-white/65">{category}</span>
+  </div>
+  <h3 class="text-xl font-semibold leading-snug tracking-tight text-white">{title}</h3>
+  <p class="mt-4 mb-6 text-sm leading-relaxed text-gray-400">{description}</p>
+  <div class="mt-auto flex items-end justify-between gap-4">
+    <ul class="flex flex-wrap gap-2" aria-label="Tecnologías y contexto">
+      {tags.map(tag => <li class="rounded-md border border-white/10 px-2 py-1 font-mono text-[11px] text-white/60">{tag}</li>)}
+    </ul>
+    {href && <a class="method-card-link shrink-0 rounded-full p-2 text-white/65 transition-colors duration-200 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-500" href={href} aria-label={`Saber más: ${title}`}>
+      <svg class="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transform-none" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12" /></svg>
+    </a>}
+  </div>
+</article>
+
+<style>
+  .method-card-link::after { content: ''; position: absolute; inset: 0; border-radius: 12px; }
+  .method-card:focus-within { transform: translateY(-4px); }
+  @media (prefers-reduced-motion: reduce) {
+    .method-card:focus-within { transform: none; }
+    .method-card-link, .method-card-link svg { transition: none; }
+  }
+</style>

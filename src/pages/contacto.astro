@@ -7,10 +7,13 @@ import AuditForm from '../components/AuditForm';
 
 <Layout title="Contacto — Daovez Studio" description="Cuéntanos qué proceso quieres mejorar y solicita una auditoría inicial.">
 	<Navbar />
-	<main class="page-shell container">
-		<div class="page-intro"><p class="eyebrow">Primer paso</p><h1>Hablemos de lo<br /><span>que sigue.</span></h1></div>
+	<main class="page-shell container contact-page">
 		<div class="contact-layout">
-			<aside class="contact-aside"><p>No necesitas tener la solución definida. Solo el reto. Analizamos el contexto y te ayudamos a encontrar el siguiente movimiento.</p><span class="mono">Respuesta en 1–2 días laborables</span></aside>
+			<div class="contact-editorial">
+				<p class="eyebrow">Primer paso</p>
+				<h1>Hablemos de lo<br /><span>que sigue.</span></h1>
+				<div class="contact-aside"><p>No necesitas tener la solución definida. Solo el reto. Analizamos el contexto y te ayudamos a encontrar el siguiente movimiento.</p><span class="mono">Respuesta en 1–2 días laborables</span></div>
+			</div>
 			<AuditForm client:load />
 		</div>
 	</main>
