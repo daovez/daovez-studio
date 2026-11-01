@@ -1,0 +1,22 @@
+---
+---
+
+<section class="section workflow-section">
+	<div class="container">
+		<div class="section-heading compact">
+			<div><p class="eyebrow">Pensado para avanzar</p><h2>Un flujo que<br /><span>nunca se atasca.</span></h2></div>
+			<p class="section-lead">Cada pieza tiene un propósito. Cada conexión, un resultado.</p>
+		</div>
+		<div class="workflow-track">
+			<div class="workflow-line"></div>
+			{['Descubrir', 'Diseñar', 'Construir', 'Activar'].map((step, index) => (
+				<div class="workflow-step">
+					<span class:list={['step-dot', { active: index === 3 }]}></span>
+					<span class="mono">0{index + 1}</span>
+					<strong>{step}</strong>
+					<p>{['Entendemos el contexto.', 'Dibujamos el sistema.', 'Lo hacemos real.', 'Medimos y mejoramos.'][index]}</p>
+				</div>
+			))}
+		</div>
+	</div>
+</section>

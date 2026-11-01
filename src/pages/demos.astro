@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+export const prerender = true;
+const demos = [
+	{ label: '01 / Flujo', title: 'Visualiza una automatización', text: 'Explora cómo una señal se convierte en una acción coordinada.' },
+	{ label: '02 / Datos', title: 'Deja que los datos hablen', text: 'Una vista clara para tomar decisiones sin buscar entre pestañas.' },
+	{ label: '03 / IA', title: 'IA con propósito', text: 'Interfaces que convierten capacidades avanzadas en trabajo útil.' }
+];
+---
+
+<Layout title="Demos — Daovez Studio" description="Explora demostraciones interactivas de sistemas y automatizaciones de Daovez Studio.">
+	<Navbar />
+	<main class="page-shell container">
+		<div class="page-intro"><p class="eyebrow">Demos interactivas</p><h1>La tecnología se<br /><span>entiende haciéndola.</span></h1><p>Pequeñas demostraciones de cómo pensamos los sistemas: claros, conectados y preparados para crecer.</p></div>
+		<div class="demo-grid">{demos.map((demo) => <article class="card demo-card"><span class="mono">{demo.label}</span><h3>{demo.title}</h3><p>{demo.text}</p><span class="card-arrow" aria-hidden="true">↗</span></article>)}</div>
+	</main>
+	<Footer />
+</Layout>

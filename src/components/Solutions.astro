@@ -1,0 +1,23 @@
+---
+const solutions = [
+	{ number: '01', title: 'Automatización', text: 'Conecta tus herramientas y elimina el trabajo repetitivo que frena a tu equipo.', tag: 'Operaciones' },
+	{ number: '02', title: 'Sistemas internos', text: 'Diseñamos la capa digital que ordena la información y hace visibles tus procesos.', tag: 'Estructura' },
+	{ number: '03', title: 'Experiencias', text: 'Interfaces claras para productos, servicios y demostraciones que dejan huella.', tag: 'Producto' }
+];
+---
+
+<section id="soluciones" class="section container">
+	<div class="section-heading">
+		<div><p class="eyebrow">Qué hacemos</p><h2>La complejidad,<br /><span>bien resuelta.</span></h2></div>
+		<p class="section-lead">No añadimos capas. Encontramos el camino más directo entre tus objetivos y la tecnología.</p>
+	</div>
+	<div class="solution-grid">
+		{solutions.map((solution) => (
+			<article class="card solution-card">
+				<div class="card-top"><span class="mono">{solution.number}</span><span class="tag">{solution.tag}</span></div>
+				<div><h3>{solution.title}</h3><p>{solution.text}</p></div>
+				<span class="card-arrow" aria-hidden="true">↗</span>
+			</article>
+		))}
+	</div>
+</section>

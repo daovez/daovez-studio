@@ -1,46 +1,31 @@
-# Astro Starter Kit: Basics
+# Daovez Studio
+
+Web corporativa B2B construida con Astro, React, TypeScript y Tailwind CSS 4.
+
+## Desarrollo
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Para validar la aplicación:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```sh
+npm run astro -- check
+npm run build
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Estructura
 
-## 🧞 Commands
+- `src/components/`: secciones Astro y componentes React interactivos.
+- `src/pages/`: páginas públicas (`/`, `/demos`, `/contacto`).
+- `src/actions/`: Astro Actions con validación server-side.
+- `src/lib/`: interfaces de servicios para futuras integraciones.
+- `src/styles/`: tokens y estilos globales.
 
-All commands are run from the root of the project, from a terminal:
+La home y las demos se prerenderizan. La página de contacto se ejecuta bajo demanda para poder procesar `submitAudit`. El flujo actual valida, aplica honeypot y rate limit en memoria, pero no persiste ni envía datos a terceros. La conexión futura con n8n debe configurarse únicamente en el servidor usando las variables de `.env.example`.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Despliegue
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+El proyecto usa el adaptador oficial de Vercel y `output: 'server'`. No se deben exponer secretos en componentes Astro o React; las variables `N8N_*` están reservadas para la integración backend futura.
