@@ -12,7 +12,9 @@ studio-navigation { display: block; }
 .site-header :is(a, button):focus-visible { outline: 2px solid #1D3DF2; outline-offset: 4px; }
 .site-header .nav-actions { display: flex; align-items: center; justify-self: end; gap: 16px; }
 .site-header .nav-social { display: grid; place-items: center; width: 36px; height: 36px; color: rgba(255,255,255,.78); transition: color 180ms ease; }
-.site-header .nav-social svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.site-header .nav-social svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.site-header .nav-social .instagram-icon { width: 24px; height: 24px; }
+.site-header .nav-social .linkedin-icon { width: 17px; height: 17px; fill: currentColor; stroke: none; }
 .site-header .nav-social:hover, .site-header .nav-social:focus-visible { color: #FFFFFF; }
 .site-header .nav-contact { min-height: 48px; padding: 10px 22px; border-radius: 999px; font-size: 13px; transition: background 180ms ease, border-color 180ms ease; }
 .site-header .nav-contact:hover { transform: none; }

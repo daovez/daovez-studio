@@ -6,6 +6,9 @@ const requestSchema = z.object({
 	name: z.string().trim().min(2, 'Indica tu nombre.').max(80),
 	email: z.string().trim().email('Indica un email válido.').max(160),
 	company: z.string().trim().min(2, 'Indica tu empresa.').max(120),
+	topic: z.enum(['automation', 'ai', 'web-apps', 'security'], {
+		error: 'Selecciona un área de interés.'
+	}),
 	challenge: z.string().trim().min(20, 'Cuéntanos un poco más sobre tu reto.').max(2000),
 	website: z.string().max(0).optional()
 });

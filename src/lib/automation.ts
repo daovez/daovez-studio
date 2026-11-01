@@ -2,6 +2,7 @@ export interface AuditRequest {
 	name: string;
 	email: string;
 	company: string;
+	topic: 'automation' | 'ai' | 'web-apps' | 'security';
 	challenge: string;
 }
 
