@@ -39,6 +39,7 @@ export default function AuditForm() {
 			<div className="field"><label htmlFor="challenge">¿QUÉ QUIERES MEJORAR?</label><textarea id="challenge" name="challenge" required minLength={20} maxLength={2000} placeholder="Cuéntanos brevemente qué proceso o reto tienes en mente." /></div>
 			<div className="honeypot" aria-hidden="true"><label htmlFor="website">Website</label><input id="website" name="website" tabIndex={-1} autoComplete="off" /></div>
 			<button className="button" type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Enviando...' : 'Solicitar auditoría'} <span aria-hidden="true">↗</span></button>
+			<p className="form-privacy">Al enviar este formulario, puedes escribirnos a <a href="mailto:yo@daovez.com">yo@daovez.com</a> para consultar cómo tratamos tu solicitud.</p>
 			<p className={`form-status ${status}`} role="status" aria-live="polite">{message}</p>
 		</form>
 	);

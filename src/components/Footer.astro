@@ -3,9 +3,23 @@ import Brand from './Brand.astro';
 ---
 
 <footer class="footer">
-	<div class="container footer-inner">
-		<div><Brand /><p class="footer-note">Sistemas digitales para negocios<br />que quieren moverse mejor.</p></div>
-		<div class="footer-links"><a href="/demos">Demos</a><a href="/contacto">Contacto</a><a href="mailto:hola@daovezstudio.com">hola@daovezstudio.com</a></div>
+	<div class="footer-container">
+		<div class="footer-row footer-primary">
+			<Brand />
+			<nav class="footer-links" aria-label="Enlaces del pie de página">
+				<a href="/demos">Demos</a>
+				<a href="/contacto">Contacto</a>
+				<a class="footer-social" href="https://www.instagram.com/daovez_studio/" target="_blank" rel="noreferrer" aria-label="Instagram de Daovez Studio">
+					<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r=".75" fill="currentColor" stroke="none" /></svg>
+				</a>
+				<a class="footer-social" href="https://www.linkedin.com/in/daovez/" target="_blank" rel="noreferrer" aria-label="Perfil de LinkedIn de Daovez">
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8.5V19M5 5.2v.1M9.5 19v-6a3 3 0 0 1 6 0v6M9.5 10v9M15.5 19v-5.8a3.2 3.2 0 0 1 6.4 0V19" /></svg>
+				</a>
+			</nav>
+		</div>
+		<div class="footer-row footer-secondary">
+			<span>© {new Date().getFullYear()} Daovez Studio</span>
+			<span class="mono">Hecho con intención.</span>
+		</div>
 	</div>
-	<div class="container footer-bottom"><span>© {new Date().getFullYear()} Daovez Studio</span><span class="mono">Hecho con intención.</span></div>
 </footer>
