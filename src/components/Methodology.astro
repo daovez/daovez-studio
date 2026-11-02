@@ -12,17 +12,17 @@ const phases = [
 		number: '02',
 		name: 'Arquitectura',
 		title: 'Diseño técnico y seguridad',
-		description: 'Definimos cómo funcionará la solución antes de programarla: arquitectura, datos, integraciones, permisos, infraestructura y requisitos de seguridad.',
+		description: 'Definimos cómo funcionará la solución antes de programarla: arquitectura, datos, integraciones, permisos, infraestructura y requisitos de seguridad. Aplicamos la tríada de ciberseguridad: confidencialidad, integridad y disponibilidad.',
 		deliverables: ['Diseño de arquitectura.', 'Plan de integraciones.', 'Alcance técnico y fases de ejecución.'],
 		result: 'Una solución diseñada para las necesidades de tu negocio.'
 	},
 	{
 		number: '03',
 		name: 'Implementación',
-		title: 'Automatización e integración',
-		description: 'Desarrollamos y conectamos los sistemas necesarios, incorporando inteligencia artificial donde aporta valor real. Validamos los procesos mediante pruebas antes de su puesta en producción.',
-		deliverables: ['Automatizaciones implementadas.', 'Integraciones verificadas.', 'Pruebas funcionales y validación.'],
-		result: 'Procesos automatizados, fiables y operativos.'
+		title: 'Automatización, integración y seguridad',
+		description: 'Desarrollamos e integramos soluciones de automatización e inteligencia artificial, incorporando la seguridad desde el diseño. Aplicamos los tres principios fundamentales de la ciberseguridad: confidencialidad, integridad y disponibilidad.',
+		deliverables: ['Automatizaciones e integraciones verificadas.', 'Protección de datos y control de accesos.', 'Validación de integridad y disponibilidad.', 'Pruebas funcionales y de seguridad.'],
+		result: 'Procesos automatizados, integrados, verificados y protegidos.'
 	},
 	{
 		number: '04',
@@ -35,12 +35,12 @@ const phases = [
 ];
 ---
 
-<section id="metodologia" class="methodology-compact" data-phases={JSON.stringify(phases)}>
+<section id="metodologia" class="methodology-compact">
 	<div class="methodology-compact-inner">
 		<header class="methodology-compact-header">
 			<p class="eyebrow">Nuestro método</p>
-			<h2>Claridad antes que velocidad.<br /><span>Arquitectura antes que código.</span></h2>
-			<p class="methodology-compact-intro">Del diagnóstico inicial a la mejora continua: un proceso estructurado para transformar operaciones en sistemas fiables.</p>
+			<h2>Primero entendemos tu negocio.<br /><span>Después lo transformamos.</span></h2>
+			<p class="methodology-compact-intro">Analizamos, diseñamos, implementamos y optimizamos soluciones tecnológicas seguras, medibles y adaptadas a tu empresa.</p>
 		</header>
 
 		<div class="methodology-tabs" role="tablist" aria-label="Fases de nuestra metodología">
@@ -64,26 +64,29 @@ const phases = [
 		<article id="methodology-panel" class="methodology-info-panel" role="tabpanel" aria-labelledby="methodology-tab-0" tabindex="0">
 			<div class="methodology-info-heading">
 				<div>
-					<p class="methodology-panel-phase">Fase <span>01</span></p>
-					<h3>Auditoría de procesos y ROI</h3>
-				</div>
-				<div class="methodology-panel-controls" aria-label="Navegar por las fases">
-					<button type="button" class="methodology-arrow" data-direction="-1" aria-label="Fase anterior">←</button>
-					<button type="button" class="methodology-arrow" data-direction="1" aria-label="Fase siguiente">→</button>
+					<p class="methodology-panel-phase">Fase <span class="phase-stack">{phases.map((phase, index) => <span data-phase-content={index} aria-hidden={index !== 0}>{phase.number}</span>)}</span></p>
+					<h3 class="phase-stack">{phases.map((phase, index) => <span data-phase-content={index} aria-hidden={index !== 0}>{phase.title}</span>)}</h3>
 				</div>
 			</div>
 			<div class="methodology-info-body">
 				<div>
-					<p class="methodology-description">Analizamos cómo trabaja tu empresa, identificamos tareas repetitivas, cuellos de botella y oportunidades reales de automatización. Priorizamos las mejoras según su impacto, coste y viabilidad.</p>
-					<p class="methodology-result"><span>Resultado de esta fase</span><strong>Sabes qué conviene automatizar y por qué.</strong></p>
+					<p class="methodology-description phase-stack">{phases.map((phase, index) => (
+						<span data-phase-content={index} aria-hidden={index !== 0}>
+							{phase.number === '03'
+								? phase.description.split(/(confidencialidad|integridad|disponibilidad)/).map((text, part) =>
+									part % 2 === 1 ? <span class="methodology-cia-term">{text}</span> : text)
+								: phase.description}
+						</span>
+					))}</p>
+					<p class="methodology-result"><span>Resultado de esta fase</span><strong class="phase-stack">{phases.map((phase, index) => <span data-phase-content={index} aria-hidden={index !== 0}>{phase.result}</span>)}</strong></p>
 				</div>
 				<div class="methodology-deliverables">
 					<p>Qué recibe tu empresa</p>
-					<ul>
-						<li>Mapa de procesos actual.</li>
-						<li>Oportunidades de mejora priorizadas.</li>
-						<li>Estimación de ahorro y ROI.</li>
-					</ul>
+					<div class="phase-stack">{phases.map((phase, index) => (
+						<ul data-phase-content={index} aria-hidden={index !== 0}>
+							{phase.deliverables.map(item => <li>{item}</li>)}
+						</ul>
+					))}</div>
 				</div>
 			</div>
 		</article>
@@ -94,19 +97,13 @@ const phases = [
 	const section = document.querySelector<HTMLElement>('#metodologia');
 
 	if (section) {
-		const phases = JSON.parse(section.dataset.phases ?? '[]');
+		const content = [...section.querySelectorAll<HTMLElement>('[data-phase-content]')];
 		const tabs = [...section.querySelectorAll<HTMLButtonElement>('[data-phase]')];
 		const panel = section.querySelector<HTMLElement>('#methodology-panel');
 		let activeIndex = 0;
 
 		const updatePanel = (nextIndex: number) => {
-			activeIndex = (nextIndex + phases.length) % phases.length;
-			const phase = phases[activeIndex];
-			const title = panel?.querySelector<HTMLElement>('h3');
-			const phaseNumber = panel?.querySelector<HTMLElement>('.methodology-panel-phase span');
-			const description = panel?.querySelector<HTMLElement>('.methodology-description');
-			const result = panel?.querySelector<HTMLElement>('.methodology-result strong');
-			const deliverables = panel?.querySelector<HTMLUListElement>('ul');
+			activeIndex = (nextIndex + tabs.length) % tabs.length;
 
 			tabs.forEach((tab, index) => {
 				const active = index === activeIndex;
@@ -116,11 +113,9 @@ const phases = [
 			});
 			panel?.classList.add('is-changing');
 			if (panel) panel.setAttribute('aria-labelledby', `methodology-tab-${activeIndex}`);
-			if (title) title.textContent = phase.title;
-			if (phaseNumber) phaseNumber.textContent = phase.number;
-			if (description) description.textContent = phase.description;
-			if (result) result.textContent = phase.result;
-			if (deliverables) deliverables.innerHTML = phase.deliverables.map((item: string) => `<li>${item}</li>`).join('');
+			content.forEach(item => {
+				item.setAttribute('aria-hidden', String(Number(item.dataset.phaseContent) !== activeIndex));
+			});
 			window.setTimeout(() => panel?.classList.remove('is-changing'), 160);
 		};
 
@@ -129,28 +124,25 @@ const phases = [
 			tab.addEventListener('keydown', (event) => {
 				if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
 					event.preventDefault();
-					const nextIndex = (Number(tab.dataset.phase) + 1) % phases.length;
+					const nextIndex = (Number(tab.dataset.phase) + 1) % tabs.length;
 					updatePanel(nextIndex);
 					tabs[nextIndex].focus();
 				}
 				if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
 					event.preventDefault();
-					const nextIndex = (Number(tab.dataset.phase) - 1 + phases.length) % phases.length;
+					const nextIndex = (Number(tab.dataset.phase) - 1 + tabs.length) % tabs.length;
 					updatePanel(nextIndex);
 					tabs[nextIndex].focus();
 				}
 				if (event.key === 'Home' || event.key === 'End') {
 					event.preventDefault();
-					const nextIndex = event.key === 'Home' ? 0 : phases.length - 1;
+					const nextIndex = event.key === 'Home' ? 0 : tabs.length - 1;
 					updatePanel(nextIndex);
 					tabs[nextIndex].focus();
 				}
 			});
 		});
 
-		section.querySelectorAll<HTMLButtonElement>('[data-direction]').forEach((arrow) => {
-			arrow.addEventListener('click', () => updatePanel(activeIndex + Number(arrow.dataset.direction)));
-		});
 	}
 </script>
 
@@ -162,31 +154,34 @@ const phases = [
 		scroll-margin-top: 40px;
 	}
 	.methodology-compact-inner { width: min(1120px, 100%); margin-inline: auto; }
-	.methodology-compact-header { max-width: 720px; }
+	.methodology-compact-header { max-width: 760px; text-align: left; }
 	.methodology-compact-header .eyebrow { margin: 0; font-size: 10px; }
-	.methodology-compact-header h2 { max-width: 700px; margin-top: 14px; font-size: clamp(36px, 4vw, 56px); font-weight: 500; letter-spacing: -.06em; line-height: .98; }
+	.methodology-compact-header h2 { max-width: 100%; margin-top: 12px; color: #fff; font-size: clamp(30px, 4.2vw, 52px); font-weight: 500; letter-spacing: -.06em; line-height: 1.08; text-wrap: balance; }
 	.methodology-compact-header h2 span { color: #3b82f6; }
-	.methodology-compact-intro { max-width: 560px; margin-top: 16px; color: #9ca6b5; font-size: 14px; line-height: 1.55; }
+	.methodology-compact-intro { max-width: 600px; margin-top: 12px; color: #9ca6b5; font-size: 14px; line-height: 1.55; text-wrap: pretty; }
 	.methodology-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 32px; }
 	.methodology-tab { display: flex; min-width: 0; align-items: center; gap: 12px; min-height: 54px; padding: 12px 14px; border: 1px solid #272e38; border-radius: 8px; color: #f4f6f9; background: #080a0f; text-align: left; cursor: pointer; transition: border-color .18s ease, background-color .18s ease; }
 	.methodology-tab > span { color: #3b82f6; font: 10px "DM Mono", monospace; }
-	.methodology-tab strong { overflow: hidden; font-size: 13px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+	.methodology-tab strong { min-width: 0; font-size: 13px; font-weight: 500; overflow-wrap: anywhere; }
 	.methodology-tab:hover { border-color: rgba(59,130,246,.55); background: rgba(16,21,29,.65); }
 	.methodology-tab.is-active { border-color: #3b82f6; background: #10151d; }
-	.methodology-tab:focus-visible, .methodology-arrow:focus-visible { outline: 2px solid #3b82f6; outline-offset: 3px; }
-	.methodology-info-panel { position: relative; min-height: 258px; margin-top: 12px; padding: 24px; border: 1px solid #272e38; border-radius: 12px; background: #10151d; transition: border-color .18s ease, opacity .16s ease; }
+	.methodology-tab:focus-visible { outline: 2px solid #3b82f6; outline-offset: 3px; }
+	.methodology-info-panel { position: relative; margin-top: 12px; padding: 24px; border: 1px solid #272e38; border-radius: 12px; background: #10151d; transition: border-color .18s ease, opacity .16s ease; }
+	/* Invisible variants retain their intrinsic size to prevent layout shifts. */
+	.phase-stack { display: grid; min-width: 0; }
+	.phase-stack > [data-phase-content] { grid-area: 1 / 1; min-width: 0; overflow-wrap: anywhere; }
+	[data-phase-content][aria-hidden="true"] { visibility: hidden; }
+	.methodology-panel-phase > .phase-stack { display: inline-grid; }
 	.methodology-info-panel.is-changing { opacity: .7; }
 	.methodology-info-panel:focus-visible { outline: 2px solid rgba(59,130,246,.55); outline-offset: 3px; }
 	.methodology-info-heading, .methodology-info-body { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px; }
-	.methodology-info-heading { align-items: start; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,.09); }
+	.methodology-info-heading { grid-template-columns: minmax(0, 1fr); align-items: start; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,.09); }
 	.methodology-panel-phase { margin: 0 0 7px; color: #9ca6b5; font: 10px "DM Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
 	.methodology-panel-phase span { color: #3b82f6; }
 	.methodology-info-panel h3 { margin: 0; color: #f4f6f9; font-size: 23px; font-weight: 500; letter-spacing: -.03em; }
-	.methodology-panel-controls { display: flex; gap: 6px; }
-	.methodology-arrow { width: 30px; height: 30px; border: 1px solid #272e38; border-radius: 6px; color: #9ca6b5; background: transparent; cursor: pointer; transition: border-color .18s ease, color .18s ease, background-color .18s ease; }
-	.methodology-arrow:hover { border-color: #3b82f6; color: white; background: rgba(59,130,246,.1); }
 	.methodology-info-body { grid-template-columns: minmax(0, 1.3fr) minmax(220px, .7fr); gap: 40px; padding-top: 19px; }
 	.methodology-description { max-width: 590px; margin: 0; color: #9ca6b5; font-size: 13px; line-height: 1.6; }
+	.methodology-cia-term { padding-inline: 3px; border-radius: 3px; color: #60a5fa; background: rgba(59,130,246,.1); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 	.methodology-result { display: grid; gap: 5px; margin-top: 18px; padding-left: 12px; border-left: 2px solid #3b82f6; }
 	.methodology-result span, .methodology-deliverables > p { color: #9ca6b5; font: 10px "DM Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
 	.methodology-result strong { color: #f4f6f9; font-size: 14px; font-weight: 500; }
@@ -201,18 +196,18 @@ const phases = [
 	}
 	@media (max-width: 600px) {
 		.methodology-compact { padding: 36px 20px 48px; }
-		.methodology-compact-header h2 { font-size: clamp(34px, 10vw, 46px); }
+		.methodology-compact-header h2 { font-size: clamp(30px, 7vw, 40px); }
 		.methodology-tabs { gap: 6px; margin-top: 24px; }
 		.methodology-tab { min-height: 48px; padding: 10px; gap: 8px; }
 		.methodology-tab strong { font-size: 12px; }
-		.methodology-info-panel { min-height: 0; padding: 18px; }
-		.methodology-info-heading, .methodology-info-body { grid-template-columns: 1fr; gap: 16px; }
+		.methodology-info-panel { padding: 18px; }
+		.methodology-info-heading { gap: 12px; }
+		.methodology-info-body { grid-template-columns: 1fr; gap: 16px; }
 		.methodology-info-panel h3 { font-size: 20px; }
-		.methodology-panel-controls { position: absolute; right: 38px; }
 		.methodology-info-body { padding-top: 16px; }
 		.methodology-deliverables { padding: 16px 0 0; border-top: 1px solid rgba(255,255,255,.09); border-left: 0; }
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.methodology-tab, .methodology-arrow, .methodology-info-panel { transition: none; }
+		.methodology-tab, .methodology-info-panel { transition: none; }
 	}
 </style>

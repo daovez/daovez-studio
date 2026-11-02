@@ -190,7 +190,7 @@ body:has(.contact-page) { background-color: #080B10; }
 }
 @media (max-width: 767px) {
   .contact-page { display: block; width: calc(100% - 32px); min-height: auto; padding-top: 96px; padding-bottom: 48px; }
-  .contact-page .contact-layout { display: flex; gap: 24px; }
+  .contact-page .contact-layout { display: flex; flex-direction: column; gap: 24px; }
   .contact-page .contact-editorial { width: 100%; text-align: center; }
   .contact-page h1 { margin: 14px auto 0; font-size: clamp(38px, 11vw, 50px); line-height: .98; }
   .contact-page .contact-aside { margin-top: 18px; }
