@@ -157,14 +157,15 @@ body:has(.contact-page) { background-color: #080B10; }
 .contact-direct a, .form-privacy a { color: var(--text); text-decoration: underline; text-decoration-color: rgba(255,255,255,.35); text-underline-offset: 3px; }
 .contact-direct a:hover, .form-privacy a:hover { color: var(--accent-hover); text-decoration-color: var(--accent-hover); }
 .contact-rule { width: 30px; height: 1px; background: rgba(255,255,255,.14); }
-.contact-page .audit-form { width: min(100%, 440px); min-width: 0; padding: 24px; border: 1px solid #28313D; border-radius: 14px; background: #10151D; box-shadow: 0 12px 30px rgba(0,0,0,.14); }
+.contact-page .audit-form { width: min(100%, 440px); min-width: 0; padding: 24px; border: 1px solid rgba(255,255,255,.24); border-radius: 14px; background: rgba(255,255,255,.035); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); box-shadow: 0 12px 30px rgba(0,0,0,.14), inset 0 1px 0 rgba(255,255,255,.08); }
 .contact-page .form-row { gap: 10px; }
 .contact-page .field { gap: 5px; margin-bottom: 10px; }
 .contact-page .field label { color: #8B95A5; font-size: 10px; }
-.contact-page .field input, .contact-page .field select { min-height: 43px; padding: 9px 11px; color: #F5F7FA; background: #151C26; border-color: #28313D; border-radius: 8px; transition: border-color .18s ease, background-color .18s ease; }
-.contact-page .field textarea { min-height: 92px; padding: 9px 11px; color: #F5F7FA; background: #151C26; border-color: #28313D; border-radius: 8px; transition: border-color .18s ease, background-color .18s ease; }
+.contact-page .field input, .contact-page .field select { min-height: 43px; padding: 9px 11px; color: #F5F7FA; background: rgba(8,11,16,.2); border-color: rgba(255,255,255,.16); border-radius: 8px; transition: border-color .18s ease, background-color .18s ease; }
+.contact-page .field textarea { min-height: 92px; padding: 9px 11px; color: #F5F7FA; background: rgba(8,11,16,.2); border-color: rgba(255,255,255,.16); border-radius: 8px; transition: border-color .18s ease, background-color .18s ease; }
+.contact-page .field select option { color: #F5F7FA; background: #151C26; }
 .contact-page .field input::placeholder, .contact-page .field textarea::placeholder { color: #8B95A5; }
-.contact-page .field input:focus, .contact-page .field textarea:focus, .contact-page .field select:focus { border-color: #3B82F6; background: #151C26; outline: 2px solid rgba(59,130,246,.16); outline-offset: 0; }
+.contact-page .field input:focus, .contact-page .field textarea:focus, .contact-page .field select:focus { border-color: #3B82F6; background: rgba(8,11,16,.35); outline: 2px solid rgba(59,130,246,.16); outline-offset: 0; }
 .topic-field { min-width: 0; margin: 0 0 10px; padding: 0; border: 0; }
 .topic-field legend { margin-bottom: 6px; color: #8B95A5; font: 10px "DM Mono", monospace; }
 .topic-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
